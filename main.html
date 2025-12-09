@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Main Scene</title>
+    <style>
+        /* --- CẤU HÌNH CƠ BẢN --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scene {
+            position: absolute;
+            width: 1920px;
+            height: 1080px;
+            background-color: #000;
+            overflow: hidden;
+            left: 50%;
+            top: 50%;
+            transform-origin: center center;
+        }
+
+        .layer {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* --- Z-INDEX --- */
+        .z-bg { z-index: 0; }
+        .z-clouds { z-index: 10; }
+        .z-text { z-index: 20; }
+        .z-cake { z-index: 30; }
+
+        /* --- 4 PHONG BÌ TO + CLICK ĐƯỢC --- */
+        .envelope {
+            position: absolute;
+            z-index: 40;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease, filter 0.2s ease;
+            user-select: none;
+        }
+        .envelope:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            filter: brightness(1.15);
+        }
+        .envelope img {
+            display: block;
+            width: 380px;
+            height: auto;
+        }
+
+        /* Vị trí 4 bức thư
+           1–2: xuống + trái 20px
+           3–4: xuống + phải 20px
+           Riêng 2 & 4: dịch LÊN 10px
+        */
+        .env1 {
+            left: calc(17% - 20px);
+            top:  calc(48% + 20px);
+        }
+        .env2 {
+            left: calc(17% - 20px);
+            top:  calc(82% + 10px);   /* lên 10px */
+        }
+        .env3 {
+            left: calc(83% + 20px);
+            top:  calc(48% + 20px);
+        }
+        .env4 {
+            left: calc(83% + 20px);
+            top:  calc(82% + 10px);   /* lên 10px */
+        }
+
+        /* --- NÚT FINAL TRÊN ĐỈNH BÁNH (CHỈ HIỆN KHI ĐỌC ĐỦ 4 THƯ) --- */
+        .final-btn {
+            position: absolute;
+            top: 46%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 60;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        .final-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .final-btn img {
+            display: block;
+            max-width: 260px;
+            height: auto;
+            filter:
+                drop-shadow(0 0 10px rgba(255, 240, 200, 0.8))
+                drop-shadow(0 0 20px rgba(120, 170, 255, 0.7));
+            animation: glowPulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                filter:
+                    drop-shadow(0 0 10px rgba(255, 240, 200, 0.8))
+                    drop-shadow(0 0 20px rgba(120, 170, 255, 0.7));
+            }
+            50% {
+                filter:
+                    drop-shadow(0 0 20px rgba(255, 255, 220, 1))
+                    drop-shadow(0 0 40px rgba(150, 200, 255, 1));
+            }
+        }
+
+        /* --- ANIMATION MÂY --- */
+        @keyframes cloud-float-slow {
+            0%, 100% { transform: translate(0,0); }
+            50%      { transform: translate(-30px, 15px); }
+        }
+        @keyframes cloud-float-medium {
+            0%, 100% { transform: translate(0,0); }
+            50%      { transform: translate(25px, -20px); }
+        }
+        .cloud-left-base, .cloud-right-highlight {
+            animation: cloud-float-slow 10s ease-in-out infinite;
+        }
+        .cloud-left-highlight, .cloud-right-base {
+            animation: cloud-float-medium 12s ease-in-out infinite reverse;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scene" id="mainScene">
+        <!-- VIDEO BACKGROUND -->
+        <video id="bgVideo" class="layer z-bg" muted playsinline preload="auto">
+            <source src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/6e479f3b473c38442b7a5bf10d6fa2e1017a4483/Project%20SN%20AL/1201.mp4" type="video/mp4">
+        </video>
+
+        <!-- MÂY -->
+        <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/ccaf72468c9b0abc95003b584634609fdb681cc4/Project%20SN%20AL/7.png"
+             class="layer z-clouds cloud-left-base" alt="Cloud Left Base">
+        <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/ccaf72468c9b0abc95003b584634609fdb681cc4/Project%20SN%20AL/6.png"
+             class="layer z-clouds cloud-left-highlight" alt="Cloud Left Highlight">
+        <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/ccaf72468c9b0abc95003b584634609fdb681cc4/Project%20SN%20AL/8.png"
+             class="layer z-clouds cloud-right-base" alt="Cloud Right Base">
+        <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/ccaf72468c9b0abc95003b584634609fdb681cc4/Project%20SN%20AL/9.png"
+             class="layer z-clouds cloud-right-highlight" alt="Cloud Right Highlight">
+
+        <!-- TEXT & CAKE -->
+        <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/ccaf72468c9b0abc95003b584634609fdb681cc4/Project%20SN%20AL/10.png"
+             class="layer z-text" alt="Happy Birthday Text">
+        <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/ccaf72468c9b0abc95003b584634609fdb681cc4/Project%20SN%20AL/15.png"
+             class="layer z-cake" alt="Birthday Cake">
+
+        <!-- 4 BỨC THƯ CLICK ĐƯỢC -->
+        <div class="envelope env1" data-target="bucthu1.html">
+            <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/d6faed2a79bcf9e1081c4bc5f6b156161e74e086/Project%20SN%20AL/buthu/11.png"
+                 alt="Envelope 1">
+        </div>
+
+        <div class="envelope env2" data-target="bucthu2.html">
+            <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/d6faed2a79bcf9e1081c4bc5f6b156161e74e086/Project%20SN%20AL/buthu/12.png"
+                 alt="Envelope 2">
+        </div>
+
+        <div class="envelope env3" data-target="bucthu3.html">
+            <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/d6faed2a79bcf9e1081c4bc5f6b156161e74e086/Project%20SN%20AL/buthu/13.png"
+                 alt="Envelope 3">
+        </div>
+
+        <div class="envelope env4" data-target="bucthu4.html">
+            <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/d6faed2a79bcf9e1081c4bc5f6b156161e74e086/Project%20SN%20AL/buthu/14.png"
+                 alt="Envelope 4">
+        </div>
+
+        <!-- NÚT CUỐI TRÊN ĐỈNH BÁNH: CHỈ HIỆN KHI ĐÃ MỞ 4 THƯ -->
+        <a href="final.html" id="finalBtn" class="final-btn">
+            <img
+                src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/e1e1871aeee8d85d0424e9326693936e375cf020/Project%20SN%20AL/%E7%81%AF%E5%A1%94%E4%B9%8B%E5%85%89.png"
+                alt="Next Step">
+        </a>
+    </div>
+
+    <script>
+        /* --- INIT: RESET CỜ CHO PHIÊN BẢN NÀY --- */
+        (function initBirthdayFlagsOnce() {
+            const INIT_KEY = 'birthday_session_initialized_v3';
+            if (!localStorage.getItem(INIT_KEY)) {
+                localStorage.removeItem('letter1_opened');
+                localStorage.removeItem('letter2_opened');
+                localStorage.removeItem('letter3_opened');
+                localStorage.removeItem('letter4_opened');
+                localStorage.setItem(INIT_KEY, 'true');
+            }
+        })();
+
+        /* --- SCALE SCENE --- */
+        function resizeScene() {
+            const scene = document.getElementById('mainScene');
+            const finalScale = Math.max(
+                window.innerWidth / 1920,
+                window.innerHeight / 1080
+            );
+            scene.style.transform = `translate(-50%, -50%) scale(${finalScale})`;
+        }
+        window.addEventListener('resize', resizeScene);
+        window.addEventListener('load', resizeScene);
+
+        /* --- VIDEO BOOMERANG --- */
+        const video = document.getElementById('bgVideo');
+        let isReversing = false;
+        video.muted = true;
+
+        function boomerangLoop() {
+            if (video.readyState < 2 || !video.duration) {
+                requestAnimationFrame(boomerangLoop);
+                return;
+            }
+
+            if (!isReversing) {
+                if (!video.paused && video.currentTime >= video.duration - 0.1) {
+                    isReversing = true;
+                    video.pause();
+                }
+            } else {
+                video.currentTime = Math.max(0, video.currentTime - 0.04);
+                if (video.currentTime <= 0.1) {
+                    isReversing = false;
+                    video.currentTime = 0;
+                    video.play().catch(() => {});
+                }
+            }
+            requestAnimationFrame(boomerangLoop);
+        }
+
+        function startVideo() {
+            video.play().then(() => {
+                boomerangLoop();
+            }).catch(() => {
+                console.log("Autoplay blocked.");
+            });
+        }
+
+        if (video.readyState >= 1) {
+            startVideo();
+        } else {
+            video.addEventListener('loadedmetadata', startVideo);
+        }
+
+        /* --- CLICK VÀO PHONG BÌ → MỞ TRANG THƯ --- */
+        document.querySelectorAll('.envelope').forEach(env => {
+            env.addEventListener('click', () => {
+                const target = env.getAttribute('data-target');
+                if (target) window.location.href = target;
+            });
+        });
+
+        /* --- CHỈ HIỆN NÚT KHI ĐÃ MỞ ĐỦ 4 THƯ --- */
+        function hasOpenedAllLetters() {
+            const keys = ['letter1_opened', 'letter2_opened', 'letter3_opened', 'letter4_opened'];
+            return keys.every(k => localStorage.getItem(k) === 'true');
+        }
+
+        function updateFinalButtonVisibility() {
+            const finalBtn = document.getElementById('finalBtn');
+            if (!finalBtn) return;
+            if (hasOpenedAllLetters()) {
+                finalBtn.classList.add('visible');
+            } else {
+                finalBtn.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('load', updateFinalButtonVisibility);
+    </script>
+</body>
+</html>

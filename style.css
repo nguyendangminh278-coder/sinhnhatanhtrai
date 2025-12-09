@@ -1,0 +1,112 @@
+/* Reset and Basic Setup */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000; /* Nền đen */
+    overflow: hidden; /* Chặn cuộn chuột */
+    cursor: none; /* Ẩn con trỏ chuột mặc định toàn trang */
+}
+
+/* --- Scene Container Setup --- */
+/* Giữ tỷ lệ khung hình 1920x1080 */
+.scene-container {
+    position: relative;
+    width: 100vw;
+    height: calc(100vw * 1080 / 1920);
+    max-height: 100vh;
+    max-width: calc(100vh * 1920 / 1080);
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    overflow: hidden;
+    background-color: #000;
+}
+
+.scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+}
+
+/* Layout 1: Background Path */
+.bg-layer {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Layout 2: Envelope - PHIÊN BẢN KHỔNG LỒ */
+.envelope-layer {
+    position: absolute;
+    /* Căn giữa và làm cho nó rất to */
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    width: 65%; /* Kích thước chiều rộng rất lớn (65% khung cảnh) */
+    height: auto; 
+    z-index: 2;
+    
+    /* Quan trọng: cho phép nhận sự kiện click dù con trỏ bị ẩn */
+    pointer-events: auto; 
+    cursor: none; /* Vẫn ẩn con trỏ khi di chuột vào */
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Hiệu ứng khi "soi đèn" trúng bức thư */
+.envelope-layer:hover {
+    transform: translate(-50%, -50%) scale(1.05); /* Phóng to nhẹ khi hover */
+    filter: brightness(1.2); /* Sáng hơn một chút */
+}
+
+
+/* --- HIỆU ỨNG ĐÈN PIN (Flashlight Overlay) --- */
+.flashlight-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000; /* Lớp phủ màu đen tuyền */
+    z-index: 10; /* Nằm trên cùng */
+    pointer-events: none; /* Quan trọng: cho phép click xuyên qua lớp đen này xuống bức thư bên dưới */
+    
+    /* Biến CSS lưu vị trí chuột (sẽ được JS cập nhật) */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+
+    /* KỸ THUẬT MASKING: Tạo lỗ thủng trên lớp đen */
+    /* - transparent 10px: Bán kính vùng nhìn thấy rõ (khoảng 10px như yêu cầu) */
+    /* - black 150px: Vùng chuyển mờ dần ra xung quanh */
+    -webkit-mask-image: radial-gradient(circle at var(--mouse-x) var(--mouse-y), transparent 10px, black 150px);
+            mask-image: radial-gradient(circle at var(--mouse-x) var(--mouse-y), transparent 10px, black 150px);
+    
+    transition: opacity 0.5s ease; /* Hiệu ứng mờ dần khi click */
+}
+
+
+/* --- Video Overlay Section --- */
+.video-overlay {
+    display: none; /* Ẩn ban đầu */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-overlay video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Tràn viền */
+    outline: none;
+}

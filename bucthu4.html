@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bức thư số 4</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 100;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            text-decoration: none;
+            padding: 10px 26px;
+            border-radius: 999px;
+
+            font-family: "Dancing Script", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+
+            background: radial-gradient(circle at 10% 0%, #2f3f9c 0%, #121530 45%, #050814 100%);
+            border: 2px solid #f6d76b;
+            color: #fef8e6;
+
+            box-shadow:
+                0 0 18px rgba(7, 11, 40, 0.9),
+                0 0 26px rgba(246, 215, 107, 0.7);
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .back-btn::before {
+            content: "↩";
+            font-size: 20px;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px) scale(1.06);
+            background: radial-gradient(circle at 0% 0%, #4157c7 0%, #1a214d 40%, #050814 100%);
+            box-shadow:
+                0 0 20px rgba(10, 18, 70, 1),
+                0 0 32px rgba(246, 215, 107, 0.9);
+        }
+
+        .back-btn:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow:
+                0 0 10px rgba(5, 10, 35, 0.9),
+                0 0 22px rgba(246, 215, 107, 0.7);
+        }
+
+        .full-bg {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            animation: zoomIn 1.5s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(1.1); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+
+        .video-wrapper {
+            position: absolute;
+            left: 50%;
+            bottom: calc(4% + 20px); /* lên 20px */
+            transform: translateX(-50%);
+            width: 70%;
+            max-width: 900px;
+            z-index: 2;
+            padding: 8px;
+            border-radius: 18px;
+            background: rgba(0, 0, 0, 0.55);
+            box-shadow: 0 0 18px rgba(0, 0, 0, 0.7);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            background: #000;
+        }
+
+        @media (max-width: 768px) {
+            .video-wrapper {
+                width: 90%;
+                bottom: calc(3% + 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="main.html" class="back-btn">Quay lại</a>
+
+    <!-- Hình lá thư -->
+    <img src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/b74aad5cfd9322cbc0579beac46a82ad6257bcf0/Project%20SN%20AL/casc%20buc%20thu/20.png" 
+         class="full-bg" alt="Thu 4">
+
+    <!-- Video dm -->
+    <div class="video-wrapper">
+        <video id="video4" controls playsinline>
+            <source src="https://raw.githubusercontent.com/nguyendangminh278-coder/sinhnhatanhtrai/27c74f73074d52a78f05147b5078bcaa54e1a1f9/Project%20SN%20AL/casc%20buc%20thu/dm.mp4" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+        </video>
+    </div>
+
+    <script>
+        localStorage.setItem('letter4_opened', 'true');
+
+        window.addEventListener('load', () => {
+            const v = document.getElementById('video4');
+            v.play().catch(() => {});
+        });
+    </script>
+</body>
+</html>
